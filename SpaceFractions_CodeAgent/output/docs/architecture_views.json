@@ -1,0 +1,681 @@
+{
+  "source": "Architecture_View.md",
+  "diagram_count": 13,
+  "views": [
+    {
+      "view": "ScenarioView",
+      "diagrams": [
+        {
+          "name": "UseCaseDiagram",
+          "elements": [
+            {
+              "kind": "actor",
+              "name": "EndUser",
+              "label": "End User"
+            },
+            {
+              "kind": "actor",
+              "name": "Admin",
+              "label": "Admin"
+            },
+            {
+              "kind": "rectangle",
+              "name": "System"
+            },
+            {
+              "kind": "usecase",
+              "name": "PlayGame",
+              "label": "Play Game"
+            },
+            {
+              "kind": "usecase",
+              "name": "ViewScore",
+              "label": "View Score"
+            },
+            {
+              "kind": "usecase",
+              "name": "UpdateQuestions",
+              "label": "Update Questions"
+            },
+            {
+              "kind": "usecase",
+              "name": "ViewHelp",
+              "label": "View Help"
+            }
+          ],
+          "classes": {},
+          "relations": [
+            {
+              "from": "EndUser",
+              "arrow": "--",
+              "to": "PlayGame",
+              "label": ""
+            },
+            {
+              "from": "EndUser",
+              "arrow": "--",
+              "to": "ViewScore",
+              "label": ""
+            },
+            {
+              "from": "EndUser",
+              "arrow": "--",
+              "to": "ViewHelp",
+              "label": ""
+            },
+            {
+              "from": "Admin",
+              "arrow": "--",
+              "to": "UpdateQuestions",
+              "label": ""
+            }
+          ],
+          "notes": [],
+          "title": "UseCase — Scenario View: Use Case Diagram",
+          "source": "@startuml UseCaseDiagram\nleft to right direction\nactor EndUser as \"End User\"\nactor Admin as \"Admin\"\nrectangle System {\n  usecase \"Play Game\" as (PlayGame)\n  usecase \"View Score\" as (ViewScore)\n  usecase \"Update Questions\" as (UpdateQuestions)\n  usecase \"View Help\" as (ViewHelp)\n}\nEndUser -- (PlayGame)\nEndUser -- (ViewScore)\nEndUser -- (ViewHelp)\nAdmin -- (UpdateQuestions)\n@enduml"
+        }
+      ]
+    },
+    {
+      "view": "LogicView",
+      "diagrams": [
+        {
+          "name": "ClassDiagram",
+          "elements": [
+            {
+              "kind": "class",
+              "name": "Game"
+            },
+            {
+              "kind": "class",
+              "name": "Question"
+            },
+            {
+              "kind": "class",
+              "name": "User"
+            },
+            {
+              "kind": "class",
+              "name": "Admin"
+            }
+          ],
+          "classes": {
+            "Game": {
+              "attributes": [
+                "- id: string",
+                "- score: int"
+              ],
+              "methods": [
+                "+ play(): void",
+                "+ viewScore(): int"
+              ]
+            },
+            "Question": {
+              "attributes": [
+                "- id: string",
+                "- prompt: string",
+                "- options: List<string>"
+              ],
+              "methods": [
+                "+ getPrompt(): string",
+                "+ getOptions(): List<string>"
+              ]
+            },
+            "User": {
+              "attributes": [
+                "- id: string",
+                "- username: string"
+              ],
+              "methods": [
+                "+ playGame(game: Game): void",
+                "+ viewScore(game: Game): int"
+              ]
+            },
+            "Admin": {
+              "attributes": [
+                "- id: string",
+                "- username: string"
+              ],
+              "methods": [
+                "+ updateQuestions(questions: List<Question>): void"
+              ]
+            }
+          },
+          "relations": [
+            {
+              "from": "Game",
+              "arrow": "--*",
+              "to": "Question",
+              "label": ""
+            },
+            {
+              "from": "User",
+              "arrow": "--*",
+              "to": "Game",
+              "label": ""
+            },
+            {
+              "from": "Admin",
+              "arrow": "--*",
+              "to": "Question",
+              "label": ""
+            }
+          ],
+          "notes": [],
+          "title": "Class — Logic View: Class Diagram",
+          "source": "@startuml ClassDiagram\nclass Game {\n  - id: string\n  - score: int\n  + play(): void\n  + viewScore(): int\n}\nclass Question {\n  - id: string\n  - prompt: string\n  - options: List<string>\n  + getPrompt(): string\n  + getOptions(): List<string>\n}\nclass User {\n  - id: string\n  - username: string\n  + playGame(game: Game): void\n  + viewScore(game: Game): int\n}\nclass Admin {\n  - id: string\n  - username: string\n  + updateQuestions(questions: List<Question>): void\n}\nGame --* Question\nUser --* Game\nAdmin --* Question\n@enduml"
+        },
+        {
+          "name": "ObjectDiagram",
+          "elements": [
+            {
+              "kind": "participant",
+              "name": "game1"
+            },
+            {
+              "kind": "participant",
+              "name": "question1"
+            },
+            {
+              "kind": "participant",
+              "name": "user1"
+            },
+            {
+              "kind": "participant",
+              "name": "admin1"
+            }
+          ],
+          "classes": {},
+          "relations": [
+            {
+              "from": "game1",
+              "arrow": "-->",
+              "to": "question1",
+              "label": ""
+            },
+            {
+              "from": "user1",
+              "arrow": "-->",
+              "to": "game1",
+              "label": ""
+            },
+            {
+              "from": "admin1",
+              "arrow": "-->",
+              "to": "question1",
+              "label": ""
+            }
+          ],
+          "notes": [],
+          "title": "Object — Logic View: Object Diagram",
+          "source": "@startuml ObjectDiagram\nparticipant game1\nparticipant question1\nparticipant user1\nparticipant admin1\ngame1 --> question1\nuser1 --> game1\nadmin1 --> question1\n@enduml"
+        },
+        {
+          "name": "StateDiagram",
+          "elements": [
+            {
+              "kind": "state",
+              "name": "Playing"
+            },
+            {
+              "kind": "state",
+              "name": "Paused"
+            },
+            {
+              "kind": "state",
+              "name": "GameOver"
+            }
+          ],
+          "classes": {},
+          "relations": [
+            {
+              "from": "[*]",
+              "arrow": "-->",
+              "to": "Playing",
+              "label": ""
+            },
+            {
+              "from": "Playing",
+              "arrow": "-->",
+              "to": "Paused",
+              "label": "pause()"
+            },
+            {
+              "from": "Paused",
+              "arrow": "-->",
+              "to": "Playing",
+              "label": "resume()"
+            },
+            {
+              "from": "Playing",
+              "arrow": "-->",
+              "to": "GameOver",
+              "label": "gameOver()"
+            }
+          ],
+          "notes": [],
+          "title": "State — Logic View: State Diagram",
+          "source": "@startuml StateDiagram\nstate Playing\nstate Paused\nstate GameOver\n[*] --> Playing\nPlaying --> Paused : pause()\nPaused --> Playing : resume()\nPlaying --> GameOver : gameOver()\n@enduml"
+        }
+      ]
+    },
+    {
+      "view": "ProcessView",
+      "diagrams": [
+        {
+          "name": "ActivityDiagram",
+          "elements": [],
+          "classes": {},
+          "relations": [],
+          "notes": [],
+          "title": "Activity — Process View: Activity Diagram",
+          "source": "@startuml ActivityDiagram\nstart\n:play game;\nif (game over?) then (yes)\n  :game over;\nelse (no)\n  :continue playing;\nendif\n:calculate score;\n:display score;\nstop\n@enduml"
+        },
+        {
+          "name": "SequenceDiagram1",
+          "elements": [
+            {
+              "kind": "participant",
+              "name": "User"
+            },
+            {
+              "kind": "participant",
+              "name": "Game"
+            },
+            {
+              "kind": "participant",
+              "name": "Question"
+            }
+          ],
+          "classes": {},
+          "relations": [
+            {
+              "from": "User",
+              "arrow": "->>",
+              "to": "Game",
+              "label": "play()"
+            },
+            {
+              "from": "Game",
+              "arrow": "->>",
+              "to": "Question",
+              "label": "getPrompt()"
+            },
+            {
+              "from": "Question",
+              "arrow": "->>",
+              "to": "Game",
+              "label": "return prompt"
+            },
+            {
+              "from": "Game",
+              "arrow": "->>",
+              "to": "User",
+              "label": "display prompt"
+            },
+            {
+              "from": "User",
+              "arrow": "->>",
+              "to": "Game",
+              "label": "submit answer"
+            },
+            {
+              "from": "Game",
+              "arrow": "->>",
+              "to": "Question",
+              "label": "check answer"
+            },
+            {
+              "from": "Question",
+              "arrow": "->>",
+              "to": "Game",
+              "label": "return result"
+            },
+            {
+              "from": "Game",
+              "arrow": "->>",
+              "to": "User",
+              "label": "display result"
+            }
+          ],
+          "notes": [],
+          "title": "Sequence — Process View: Sequence Diagram",
+          "source": "@startuml SequenceDiagram1\nparticipant User\nparticipant Game\nparticipant Question\nUser->>Game: play()\nGame->>Question: getPrompt()\nQuestion->>Game: return prompt\nGame->>User: display prompt\nUser->>Game: submit answer\nGame->>Question: check answer\nQuestion->>Game: return result\nGame->>User: display result\n@enduml"
+        },
+        {
+          "name": "SequenceDiagram2",
+          "elements": [
+            {
+              "kind": "participant",
+              "name": "Admin"
+            },
+            {
+              "kind": "participant",
+              "name": "Question"
+            }
+          ],
+          "classes": {},
+          "relations": [
+            {
+              "from": "Admin",
+              "arrow": "->>",
+              "to": "Question",
+              "label": "update()"
+            },
+            {
+              "from": "Question",
+              "arrow": "->>",
+              "to": "Admin",
+              "label": "return success"
+            }
+          ],
+          "notes": [],
+          "title": "Sequence — Process View: Sequence Diagram",
+          "source": "@startuml SequenceDiagram2\nparticipant Admin\nparticipant Question\nAdmin->>Question: update()\nQuestion->>Admin: return success\n@enduml"
+        },
+        {
+          "name": "CollaborationDiagram1",
+          "elements": [
+            {
+              "kind": "participant",
+              "name": "User"
+            },
+            {
+              "kind": "participant",
+              "name": "Game"
+            },
+            {
+              "kind": "participant",
+              "name": "Question"
+            }
+          ],
+          "classes": {},
+          "relations": [
+            {
+              "from": "User",
+              "arrow": "->>",
+              "to": "Game",
+              "label": "play()"
+            },
+            {
+              "from": "Game",
+              "arrow": "->>",
+              "to": "Question",
+              "label": "getPrompt()"
+            },
+            {
+              "from": "Question",
+              "arrow": "->>",
+              "to": "Game",
+              "label": "return prompt"
+            },
+            {
+              "from": "Game",
+              "arrow": "->>",
+              "to": "User",
+              "label": "display prompt"
+            },
+            {
+              "from": "User",
+              "arrow": "->>",
+              "to": "Game",
+              "label": "submit answer"
+            },
+            {
+              "from": "Game",
+              "arrow": "->>",
+              "to": "Question",
+              "label": "check answer"
+            },
+            {
+              "from": "Question",
+              "arrow": "->>",
+              "to": "Game",
+              "label": "return result"
+            },
+            {
+              "from": "Game",
+              "arrow": "->>",
+              "to": "User",
+              "label": "display result"
+            }
+          ],
+          "notes": [
+            "note right of Game: Scenario: Play Game"
+          ],
+          "title": "Collaboration — Process View: Collaboration Diagram",
+          "source": "@startuml CollaborationDiagram1\nparticipant User\nparticipant Game\nparticipant Question\nUser->>Game: play()\nGame->>Question: getPrompt()\nQuestion->>Game: return prompt\nGame->>User: display prompt\nUser->>Game: submit answer\nGame->>Question: check answer\nQuestion->>Game: return result\nGame->>User: display result\nnote right of Game: Scenario: Play Game\n@enduml"
+        },
+        {
+          "name": "CollaborationDiagram2",
+          "elements": [
+            {
+              "kind": "participant",
+              "name": "Admin"
+            },
+            {
+              "kind": "participant",
+              "name": "Question"
+            }
+          ],
+          "classes": {},
+          "relations": [
+            {
+              "from": "Admin",
+              "arrow": "->>",
+              "to": "Question",
+              "label": "update()"
+            },
+            {
+              "from": "Question",
+              "arrow": "->>",
+              "to": "Admin",
+              "label": "return success"
+            }
+          ],
+          "notes": [
+            "note right of Question: Scenario: Update Questions"
+          ],
+          "title": "Collaboration — Process View: Collaboration Diagram",
+          "source": "@startuml CollaborationDiagram2\nparticipant Admin\nparticipant Question\nAdmin->>Question: update()\nQuestion->>Admin: return success\nnote right of Question: Scenario: Update Questions\n@enduml"
+        }
+      ]
+    },
+    {
+      "view": "DevelopmentView",
+      "diagrams": [
+        {
+          "name": "PackageDiagram",
+          "elements": [
+            {
+              "kind": "package",
+              "name": "Game"
+            },
+            {
+              "kind": "class",
+              "name": "Game"
+            },
+            {
+              "kind": "class",
+              "name": "Question"
+            },
+            {
+              "kind": "package",
+              "name": "User"
+            },
+            {
+              "kind": "class",
+              "name": "User"
+            },
+            {
+              "kind": "package",
+              "name": "Admin"
+            },
+            {
+              "kind": "class",
+              "name": "Admin"
+            }
+          ],
+          "classes": {},
+          "relations": [
+            {
+              "from": "Game",
+              "arrow": "--",
+              "to": "User",
+              "label": ""
+            },
+            {
+              "from": "Game",
+              "arrow": "--",
+              "to": "Admin",
+              "label": ""
+            }
+          ],
+          "notes": [],
+          "title": "Package — Development View: Package Diagram",
+          "source": "@startuml PackageDiagram\npackage Game {\n  class Game\n  class Question\n}\npackage User {\n  class User\n}\npackage Admin {\n  class Admin\n}\nGame -- User\nGame -- Admin\n@enduml"
+        },
+        {
+          "name": "ComponentDiagram",
+          "elements": [
+            {
+              "kind": "artifact",
+              "name": "GameComponent"
+            },
+            {
+              "kind": "artifact",
+              "name": "QuestionComponent"
+            },
+            {
+              "kind": "artifact",
+              "name": "UserComponent"
+            },
+            {
+              "kind": "artifact",
+              "name": "AdminComponent"
+            }
+          ],
+          "classes": {},
+          "relations": [
+            {
+              "from": "GameComponent",
+              "arrow": "--",
+              "to": "QuestionComponent",
+              "label": ""
+            },
+            {
+              "from": "GameComponent",
+              "arrow": "--",
+              "to": "UserComponent",
+              "label": ""
+            },
+            {
+              "from": "GameComponent",
+              "arrow": "--",
+              "to": "AdminComponent",
+              "label": ""
+            }
+          ],
+          "notes": [],
+          "title": "Component — Development View: Component Diagram",
+          "source": "@startuml ComponentDiagram\nartifact GameComponent\nartifact QuestionComponent\nartifact UserComponent\nartifact AdminComponent\nGameComponent -- QuestionComponent\nGameComponent -- UserComponent\nGameComponent -- AdminComponent\n@enduml"
+        }
+      ]
+    },
+    {
+      "view": "PhysicalView",
+      "diagrams": [
+        {
+          "name": "DeploymentDiagram",
+          "elements": [
+            {
+              "kind": "node",
+              "name": "GameServer"
+            },
+            {
+              "kind": "node",
+              "name": "QuestionServer"
+            },
+            {
+              "kind": "node",
+              "name": "UserClient"
+            },
+            {
+              "kind": "node",
+              "name": "AdminClient"
+            }
+          ],
+          "classes": {},
+          "relations": [
+            {
+              "from": "GameServer",
+              "arrow": "--",
+              "to": "QuestionServer",
+              "label": ""
+            },
+            {
+              "from": "GameServer",
+              "arrow": "--",
+              "to": "UserClient",
+              "label": ""
+            },
+            {
+              "from": "GameServer",
+              "arrow": "--",
+              "to": "AdminClient",
+              "label": ""
+            }
+          ],
+          "notes": [],
+          "title": "Deployment — Physical View: Deployment Diagram",
+          "source": "@startuml DeploymentDiagram\nnode GameServer\nnode QuestionServer\nnode UserClient\nnode AdminClient\nGameServer -- QuestionServer\nGameServer -- UserClient\nGameServer -- AdminClient\n@enduml"
+        },
+        {
+          "name": "ContainerDiagram",
+          "elements": [
+            {
+              "kind": "artifact",
+              "name": "GameContainer"
+            },
+            {
+              "kind": "artifact",
+              "name": "QuestionContainer"
+            },
+            {
+              "kind": "artifact",
+              "name": "UserContainer"
+            },
+            {
+              "kind": "artifact",
+              "name": "AdminContainer"
+            }
+          ],
+          "classes": {},
+          "relations": [
+            {
+              "from": "GameContainer",
+              "arrow": "--",
+              "to": "QuestionContainer",
+              "label": ""
+            },
+            {
+              "from": "GameContainer",
+              "arrow": "--",
+              "to": "UserContainer",
+              "label": ""
+            },
+            {
+              "from": "GameContainer",
+              "arrow": "--",
+              "to": "AdminContainer",
+              "label": ""
+            }
+          ],
+          "notes": [],
+          "title": "Container — Physical View: Container Diagram",
+          "source": "@startuml ContainerDiagram\nartifact GameContainer\nartifact QuestionContainer\nartifact UserContainer\nartifact AdminContainer\nGameContainer -- QuestionContainer\nGameContainer -- UserContainer\nGameContainer -- AdminContainer\n@enduml"
+        }
+      ]
+    }
+  ]
+}
