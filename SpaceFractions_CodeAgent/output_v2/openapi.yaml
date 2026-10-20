@@ -1,0 +1,266 @@
+openapi: 3.0.0
+info:
+  title: Space Fractions API
+  description: API for the Space Fractions game (GameComponent, QuestionComponent, UserComponent)
+  version: 1.0.0
+paths:
+  /play:
+    get:
+      summary: Play the game
+      responses:
+        "200":
+          description: Game started
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  gameId:
+                    type: integer
+                    description: Game ID
+  /api/games:
+    post:
+      summary: Start a new game (FR-1)
+      responses:
+        "200":
+          description: New game created
+  /api/games/{gameId}:
+    get:
+      summary: Get game state
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Game state
+        "404":
+          description: Game not found
+  /api/games/{gameId}/question:
+    get:
+      summary: Get the current question prompt and options
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Current question
+  /api/games/{gameId}/answer:
+    post:
+      summary: Submit an answer and receive feedback
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                answer_index:
+                  type: integer
+      responses:
+        "200":
+          description: Answer result
+  /api/games/{gameId}/score:
+    get:
+      summary: View the current score (View Score use case)
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Score
+  /api/questions:
+    get:
+      summary: List all questions, including answers (Admin only)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Question list
+        "401":
+          description: Missing, invalid or expired token
+        "403":
+          description: Authenticated but not an admin
+    post:
+      summary: Create a question (Admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuestionInput"
+      responses:
+        "201":
+          description: Question created
+        "422":
+          description: Invalid question (e.g. correct_index out of range)
+        "401":
+          description: Missing, invalid or expired token
+        "403":
+          description: Authenticated but not an admin
+  /api/questions/{questionId}:
+    get:
+      summary: Get a question, including its answer (Admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: questionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Question
+        "401":
+          description: Missing, invalid or expired token
+        "403":
+          description: Authenticated but not an admin
+    put:
+      summary: Update a question (Admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: questionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuestionInput"
+      responses:
+        "200":
+          description: Question updated
+        "422":
+          description: Invalid question
+        "401":
+          description: Missing, invalid or expired token
+        "403":
+          description: Authenticated but not an admin
+    delete:
+      summary: Delete a question (Admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: questionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Question deleted
+        "401":
+          description: Missing, invalid or expired token
+        "403":
+          description: Authenticated but not an admin
+  /api/users:
+    post:
+      summary: Register a player account (UserComponent). The role is always "player"; a role field is ignored.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Credentials"
+      responses:
+        "201":
+          description: Player created (id, username, role; never the password or its hash)
+        "409":
+          description: Username already taken (case-insensitive)
+        "422":
+          description: Invalid username (3-32 of A-Z a-z 0-9 _ . -) or password (8-128 characters)
+  /api/login:
+    post:
+      summary: Log in and receive a signed bearer token (UserComponent)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Credentials"
+      responses:
+        "200":
+          description: Token, token_type "bearer", expires_in (seconds), plus id, username and role
+        "401":
+          description: Invalid username or password (same response for unknown user and wrong password)
+        "429":
+          description: Too many failed attempts for this username; see the Retry-After header
+  /api/users/me:
+    get:
+      summary: The authenticated user
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: id, username, role
+        "401":
+          description: Missing, invalid or expired token
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Token from POST /api/login. Admin accounts exist only via SPACE_ADMIN_USERNAME / SPACE_ADMIN_PASSWORD.
+  schemas:
+    Credentials:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+    QuestionInput:
+      type: object
+      required: [prompt, options, correct_index]
+      properties:
+        prompt:
+          type: string
+        options:
+          type: array
+          minItems: 2
+          maxItems: 8
+          items:
+            type: string
+        correct_index:
+          type: integer
+          description: Must be a valid index into options
+        explanation:
+          type: string
+    Question:
+      type: object
+      properties:
+        id:
+          type: string
+        prompt:
+          type: string
+        options:
+          type: array
+          items:
+            type: string
+        correct_index:
+          type: integer
+        explanation:
+          type: string

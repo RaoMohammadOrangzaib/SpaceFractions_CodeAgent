@@ -1,0 +1,8 @@
+Requirement ID,Short Text,Diagram(s),Component(s),Artifact filename(s),Rationale
+FR-1,Play game,UseCaseDiagram,GameComponent,openapi.yaml,Allows users to play the game
+FR-1,Play game,SequenceDiagram1,GameComponent,app/routers/game.py,Game flow orchestration
+NFR-1,Performance,SequenceDiagram1,GameComponent,internal.proto,Ensures the game responds quickly to user input
+ASR-1,Data durability,DeploymentDiagram,QuestionComponent,sql/question_ddl.sql,Ensures that question data is persisted and recoverable
+ASR-1,Data durability,DeploymentDiagram,GameComponent,sql/game_ddl.sql,Ensures that game state data is persisted and recoverable
+ASR-2,Security,SequenceDiagram2,UserComponent,app/routers/users.py,Secure authentication and authorization
+ASR-2,Security,UseCaseDiagram,UserComponent,app/services/user_service.py,Role-based admin access control

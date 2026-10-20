@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spacefractions
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spacefractions
+  template:
+    metadata:
+      labels:
+        app: spacefractions
+    spec:
+      containers:
+      - name: spacefractions
+        image: spacefractions:latest
+        ports:
+        - containerPort: 80
+        # Credentials come from a Secret (see README "Security"). SPACE_SECRET_KEY must be identical
+        # on every replica, otherwise a token issued by one pod is rejected by the others.
+        env:
+        - name: SPACE_SECRET_KEY
+          valueFrom:
+            secretKeyRef: {name: spacefractions-secrets, key: secret-key}
+        - name: SPACE_ADMIN_USERNAME
+          valueFrom:
+            secretKeyRef: {name: spacefractions-secrets, key: admin-username}
+        - name: SPACE_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef: {name: spacefractions-secrets, key: admin-password}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spacefractions
+spec:
+  selector:
+    app: spacefractions
+  ports:
+  - port: 80
+    targetPort: 80
+  type: LoadBalancer

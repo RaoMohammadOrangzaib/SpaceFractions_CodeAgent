@@ -1,0 +1,589 @@
+{
+  "source": "Architecture_Documentation.md",
+  "requirement_ids": [
+    "ASR-1",
+    "ASR-2",
+    "FR-1",
+    "NFR-1"
+  ],
+  "components": [
+    "GameComponent",
+    "QuestionComponent",
+    "UserComponent"
+  ],
+  "artifacts": [
+    "architecture.md",
+    "internal.proto",
+    "k8s/spacefractions-deployment.yaml",
+    "openapi.yaml",
+    "sql/game_ddl.sql",
+    "sql/question_ddl.sql",
+    "traceability_matrix.csv"
+  ],
+  "sections": [
+    {
+      "level": 0,
+      "title": "_preamble",
+      "text": "Analysis Plan: Scope: Design a production-ready architectural documentation for the Space Fractions system. Approach: Align with the Requirements document and 11 PlantUML diagrams to create a comprehensive architecture. Validation: Verify that every FR/NFR/ASR is mapped in the traceability matrix and that all major components have API contracts and data schemas.",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 1,
+      "title": "A. Executive Summary",
+      "text": "The Space Fractions system is a web-based, interactive learning tool designed to improve fraction-solving skills for sixth-grade students. The system consists of an introductory movie, a main menu, a series of fraction questions, and an ending scene with feedback. The architecture will follow a microservices approach, with separate components for the game logic, question management, and user interface. The system will be deployed on a cloud-based infrastructure, ensuring scalability and availability. Chosen architectural style: Microservices Deployment topology: Cloud-based infrastructure Top 3 design risks with concrete mitigations: QA coverage mapping:",
+      "bullets": [],
+      "tables": [
+        {
+          "columns": [
+            "Risk",
+            "Mitigation"
+          ],
+          "rows": [
+            {
+              "Risk": "1. Scalability issues",
+              "Mitigation": "Implement load balancing and autoscaling"
+            },
+            {
+              "Risk": "2. Security vulnerabilities",
+              "Mitigation": "Implement encryption and secure authentication"
+            },
+            {
+              "Risk": "3. Data loss",
+              "Mitigation": "Implement regular backups and data replication"
+            }
+          ]
+        },
+        {
+          "columns": [
+            "ASR/NFR ID",
+            "Test Type"
+          ],
+          "rows": [
+            {
+              "ASR/NFR ID": "ASR-1 (data durability)",
+              "Test Type": "Unit testing, Integration testing"
+            },
+            {
+              "ASR/NFR ID": "NFR-1 (performance)",
+              "Test Type": "Load testing, Stress testing"
+            },
+            {
+              "ASR/NFR ID": "ASR-2 (security)",
+              "Test Type": "Penetration testing, Vulnerability scanning"
+            }
+          ]
+        }
+      ],
+      "code_blocks": []
+    },
+    {
+      "level": 1,
+      "title": "B. Traceability & Rationale",
+      "text": "The following table maps the requirements to the corresponding components and artifacts:",
+      "bullets": [],
+      "tables": [
+        {
+          "columns": [
+            "Requirement ID",
+            "Short Text",
+            "Diagram(s)",
+            "Component(s)",
+            "Artifact filename(s)",
+            "Rationale"
+          ],
+          "rows": [
+            {
+              "Requirement ID": "FR-1",
+              "Short Text": "Play game",
+              "Diagram(s)": "UseCaseDiagram",
+              "Component(s)": "GameComponent",
+              "Artifact filename(s)": "openapi.yaml",
+              "Rationale": "Allows users to play the game"
+            },
+            {
+              "Requirement ID": "NFR-1",
+              "Short Text": "Performance",
+              "Diagram(s)": "SequenceDiagram1",
+              "Component(s)": "GameComponent",
+              "Artifact filename(s)": "internal.proto",
+              "Rationale": "Ensures the game responds quickly to user input"
+            },
+            {
+              "Requirement ID": "ASR-1",
+              "Short Text": "Data durability",
+              "Diagram(s)": "DeploymentDiagram",
+              "Component(s)": "QuestionComponent",
+              "Artifact filename(s)": "sql/question_ddl.sql",
+              "Rationale": "Ensures that question data is persisted and recoverable"
+            }
+          ]
+        }
+      ],
+      "code_blocks": []
+    },
+    {
+      "level": 1,
+      "title": "C. Architecture Overview",
+      "text": "The Space Fractions system consists of the following components: The system follows a microservices architecture, with each component communicating with others through APIs.",
+      "bullets": [
+        "GameComponent: responsible for game logic and user interaction",
+        "QuestionComponent: responsible for question management and data persistence",
+        "UserComponent: responsible for user authentication and authorization"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 1,
+      "title": "D. Detailed Technical Design",
+      "text": "",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "GameComponent",
+      "text": "",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 3,
+      "title": "Responsibilities & data ownership",
+      "text": "The GameComponent is responsible for game logic and user interaction. It owns the game state data.",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 3,
+      "title": "Technology options",
+      "text": "",
+      "bullets": [
+        "Language/runtime: Node.js 18-20 (Justification: meets ASR-1 (data durability))",
+        "Web framework: Express.js 4-5 (Justification: meets NFR-1 (performance))",
+        "RPC/HTTP: RESTful API (Justification: meets ASR-2 (security))",
+        "Persistence: PostgreSQL 14-15 (Justification: meets ASR-1 (data durability))",
+        "Cache: Redis 6-7 (Justification: meets NFR-1 (performance))",
+        "Messaging: RabbitMQ 3-4 (Justification: meets ASR-2 (security))",
+        "Search: Elasticsearch 7-8 (Justification: meets NFR-1 (performance))",
+        "Authn/authz: OAuth2 (Justification: meets ASR-2 (security))",
+        "Observability: Prometheus 2-3 (Justification: meets NFR-1 (performance))",
+        "CI/CD: Jenkins 2-3 (Justification: meets ASR-1 (data durability))",
+        "Container runtime: Docker 20-21 (Justification: meets ASR-1 (data durability))",
+        "Infra provisioning: Terraform 1-2 (Justification: meets ASR-1 (data durability))"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 3,
+      "title": "Recommended default stack",
+      "text": "Justification: Meets ASR-1 (data durability), NFR-1 (performance), and ASR-2 (security)",
+      "bullets": [
+        "Node.js 18",
+        "Express.js 4",
+        "PostgreSQL 14",
+        "Redis 6",
+        "RabbitMQ 3",
+        "Elasticsearch 7",
+        "OAuth2",
+        "Prometheus 2",
+        "Jenkins 2",
+        "Docker 20",
+        "Terraform 1"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 3,
+      "title": "Interface design",
+      "text": "",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 4,
+      "title": "External APIs",
+      "text": "",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": [
+        {
+          "lang": "yml",
+          "code": "openapi: 3.0.0\ninfo:\n  title: Space Fractions API\n  description: API for the Space Fractions game\n  version: 1.0.0\npaths:\n  /play:\n    get:\n      summary: Play the game\n      responses:\n        200:\n          description: Game started\n          content:\n            application/json:\n              schema:\n                type: object\n                properties:\n                  gameId:\n                    type: integer\n                    description: Game ID"
+        }
+      ]
+    },
+    {
+      "level": 4,
+      "title": "Internal contracts",
+      "text": "",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": [
+        {
+          "lang": "proto",
+          "code": "syntax = \"proto3\";\npackage spacefractions;\nservice GameService {\n  rpc Play(PlayRequest) returns (PlayResponse) {}\n}\nmessage PlayRequest {\n  int32 gameId = 1;\n}\nmessage PlayResponse {\n  int32 gameId = 1;\n}"
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "title": "Data model / schema",
+      "text": "",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": [
+        {
+          "lang": "sql",
+          "code": "CREATE TABLE games (\n  id SERIAL PRIMARY KEY,\n  game_state JSONB NOT NULL\n);"
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "title": "Caching & consistency strategy",
+      "text": "",
+      "bullets": [
+        "Cache game state in Redis",
+        "Use PostgreSQL for data persistence",
+        "Implement data replication for high availability"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 1,
+      "title": "E. Operations & Deployment",
+      "text": "",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Kubernetes-ready plan",
+      "text": "",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": [
+        {
+          "lang": "yml",
+          "code": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: spacefractions\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: spacefractions\n  template:\n    metadata:\n      labels:\n        app: spacefractions\n    spec:\n      containers:\n      - name: spacefractions\n        image: spacefractions:latest\n        ports:\n        - containerPort: 80"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "DB HA topology",
+      "text": "",
+      "bullets": [
+        "Use PostgreSQL replication for high availability",
+        "Implement regular backups and data replication"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 1,
+      "title": "F. Security Design",
+      "text": "",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Auth & AuthZ",
+      "text": "",
+      "bullets": [
+        "Implement OAuth2 for authentication and authorization",
+        "Use secure password storage and transmission"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Secrets management & rotation policy",
+      "text": "",
+      "bullets": [
+        "Use a secrets manager like Hashicorp's Vault",
+        "Rotate secrets regularly"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "TLS & service-mesh considerations",
+      "text": "",
+      "bullets": [
+        "Implement TLS encryption for all communication",
+        "Use a service mesh like Istio for traffic management and security"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Threat model summary",
+      "text": "",
+      "bullets": [
+        "Top 5 threats: unauthorized access, data breaches, denial of service, malware, and phishing",
+        "Mitigations: implement secure authentication and authorization, use encryption, and monitor for suspicious activity"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 1,
+      "title": "G. Observability & SRE",
+      "text": "",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Key per-component & business metrics",
+      "text": "",
+      "bullets": [
+        "GameComponent: game start rate, game completion rate, user engagement",
+        "QuestionComponent: question response rate, question accuracy rate"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "SLOs, error budgets, RTO/RPO",
+      "text": "",
+      "bullets": [
+        "SLO: 99.99% uptime",
+        "Error budget: 1%",
+        "RTO: 1 hour",
+        "RPO: 1 hour"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Dashboard & runbook sketch",
+      "text": "",
+      "bullets": [
+        "Implement a dashboard for monitoring key metrics",
+        "Create a runbook for common issues and errors"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 1,
+      "title": "H. Testing Strategy",
+      "text": "",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Matrix mapping Unit / Integration / Contract / E2E / Chaos tests to components",
+      "text": "",
+      "bullets": [],
+      "tables": [
+        {
+          "columns": [
+            "Test Type",
+            "GameComponent",
+            "QuestionComponent"
+          ],
+          "rows": [
+            {
+              "Test Type": "Unit testing",
+              "GameComponent": "",
+              "QuestionComponent": ""
+            },
+            {
+              "Test Type": "Integration testing",
+              "GameComponent": "",
+              "QuestionComponent": ""
+            },
+            {
+              "Test Type": "Contract testing",
+              "GameComponent": "",
+              "QuestionComponent": ""
+            },
+            {
+              "Test Type": "E2E testing",
+              "GameComponent": "",
+              "QuestionComponent": ""
+            },
+            {
+              "Test Type": "Chaos testing",
+              "GameComponent": "",
+              "QuestionComponent": ""
+            }
+          ]
+        }
+      ],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Test data management and environment isolation strategy",
+      "text": "",
+      "bullets": [
+        "Use a test data management tool like TestRail",
+        "Implement environment isolation using Docker and Kubernetes"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 1,
+      "title": "I. Migration, Data Conversion & Rollout Plan",
+      "text": "",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "High-level migration steps",
+      "text": "",
+      "bullets": [
+        "Migrate game data to new database",
+        "Update game logic to use new database",
+        "Deploy new game component"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Data-sync strategies",
+      "text": "",
+      "bullets": [
+        "Use a data sync tool like Apache NiFi",
+        "Implement data replication for high availability"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Backwards compatibility notes and migration windows for public APIs",
+      "text": "",
+      "bullets": [
+        "Implement backwards compatibility for 1 year",
+        "Use a migration window of 1 month"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 1,
+      "title": "J. Tradeoffs & Alternatives",
+      "text": "",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "For each major decision",
+      "text": "",
+      "bullets": [
+        "Alternative 1: Use a monolithic architecture",
+        "Alternative 2: Use a serverless architecture",
+        "Why chosen: Meets ASR-1 (data durability), NFR-1 (performance), and ASR-2 (security)"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 1,
+      "title": "K. Open Questions & Assumptions",
+      "text": "",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Assumptions",
+      "text": "A1: The game will be played by 1000 users concurrently A2: The game will be played for 1 hour per session",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 2,
+      "title": "Unresolved stakeholder questions needing input",
+      "text": "",
+      "bullets": [
+        "What is the expected user growth rate?",
+        "What is the expected game session length?"
+      ],
+      "tables": [],
+      "code_blocks": []
+    },
+    {
+      "level": 1,
+      "title": "L. Deliverables",
+      "text": "",
+      "bullets": [],
+      "tables": [],
+      "code_blocks": [
+        {
+          "lang": "markdown",
+          "code": "architecture.md\nopenapi.yaml\ninternal.proto\nk8s/spacefractions-deployment.yaml\nsql/game_ddl.sql\ntraceability_matrix.csv"
+        },
+        {
+          "lang": "yml",
+          "code": "openapi: 3.0.0\ninfo:\n  title: Space Fractions API\n  description: API for the Space Fractions game\n  version: 1.0.0\npaths:\n  /play:\n    get:\n      summary: Play the game\n      responses:\n        200:\n          description: Game started\n          content:\n            application/json:\n              schema:\n                type: object\n                properties:\n                  gameId:\n                    type: integer\n                    description: Game ID"
+        },
+        {
+          "lang": "proto",
+          "code": "syntax = \"proto3\";\npackage spacefractions;\nservice GameService {\n  rpc Play(PlayRequest) returns (PlayResponse) {}\n}\nmessage PlayRequest {\n  int32 gameId = 1;\n}\nmessage PlayResponse {\n  int32 gameId = 1;\n}"
+        },
+        {
+          "lang": "yml",
+          "code": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: spacefractions\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: spacefractions\n  template:\n    metadata:\n      labels:\n        app: spacefractions\n    spec:\n      containers:\n      - name: spacefractions\n        image: spacefractions:latest\n        ports:\n        - containerPort: 80"
+        },
+        {
+          "lang": "sql",
+          "code": "CREATE TABLE games (\n  id SERIAL PRIMARY KEY,\n  game_state JSONB NOT NULL\n);"
+        },
+        {
+          "lang": "csv",
+          "code": "Requirement ID,Short Text,Diagram(s),Component(s),Artifact filename(s),Rationale\nFR-1,Play game,UseCaseDiagram,GameComponent,openapi.yaml,Allows users to play the game\nNFR-1,Performance,SequenceDiagram1,GameComponent,internal.proto,Ensures the game responds quickly to user input\nASR-1,Data durability,DeploymentDiagram,QuestionComponent,sql/question_ddl.sql,Ensures that question data is persisted and recoverable"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "title": "How to review",
+      "text": "",
+      "bullets": [
+        "All FR/NFR/ASR present in traceability matrix?",
+        "OpenAPI + internal API contract included and valid?",
+        "Each major component has: responsibilities, stack options (3+), recommended stack + ASR/NFR justification, API contract, and data schema?",
+        "k8s snippet present and syntactically valid?",
+        "SQL DDLs provided for persisted entities?",
+        "Assumptions and open questions clearly listed?"
+      ],
+      "tables": [],
+      "code_blocks": []
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+Requirement ID,Short Text,Diagram(s),Component(s),Artifact filename(s),Rationale
+FR-1,Play game,UseCaseDiagram,GameComponent,openapi.yaml,Allows users to play the game
+FR-1,Play game,SequenceDiagram1,GameComponent,internal.proto,Interactive question answering
+NFR-1,Performance,SequenceDiagram1,GameComponent,internal.proto,Ensures the game responds quickly to user input
+NFR-1,Performance,DeploymentDiagram,GameComponent,k8s/spacefractions-deployment.yaml,Replicas and load balancing for responsiveness
+ASR-1,Data durability,DeploymentDiagram,QuestionComponent,sql/question_ddl.sql,Ensures that question data is persisted and recoverable
+ASR-1,Data durability,DeploymentDiagram,GameComponent,sql/game_ddl.sql,Ensures game state is persisted
+ASR-2,Security,ComponentDiagram,UserComponent,openapi.yaml,User authentication and authorization
+ASR-2,Security,SequenceDiagram2,UserComponent,app/auth.py,Password hashing and signed expiring tokens
+ASR-2,Security,UseCaseDiagram,QuestionComponent,app/main.py,Update Questions is admin-only (401/403 otherwise)
+ASR-2,Security,UseCaseDiagram,UserComponent,tests/test_api.py,Authentication and authorization tests

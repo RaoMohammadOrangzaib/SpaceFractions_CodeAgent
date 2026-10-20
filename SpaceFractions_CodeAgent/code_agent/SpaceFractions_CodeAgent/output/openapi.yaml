@@ -1,0 +1,219 @@
+openapi: 3.0.0
+info:
+  title: Space Fractions API
+  description: API for the Space Fractions game
+  version: 1.0.0
+paths:
+  /play:
+    get:
+      summary: Play the game (FR-1)
+      responses:
+        '200':
+          description: Game started
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  gameId:
+                    type: string
+                    description: Unique game session ID
+                  state:
+                    type: string
+                    enum: [playing, paused, game_over]
+                  score:
+                    type: integer
+  /games:
+    post:
+      summary: Start a game with optional question selection
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question_ids:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: Game created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  gameId:
+                    type: string
+                  state:
+                    type: string
+                  score:
+                    type: integer
+  /games/{game_id}/prompt:
+    get:
+      summary: Get the current question prompt
+      parameters:
+        - name: game_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Current question
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  question_id:
+                    type: string
+                  prompt:
+                    type: string
+                  options:
+                    type: array
+                    items:
+                      type: string
+  /games/{game_id}/answer:
+    post:
+      summary: Submit an answer to the current question
+      parameters:
+        - name: game_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                answer:
+                  type: string
+      responses:
+        '200':
+          description: Answer result and updated score
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  correct:
+                    type: boolean
+                  score:
+                    type: integer
+                  state:
+                    type: string
+  /games/{game_id}/score:
+    get:
+      summary: View the current score
+      parameters:
+        - name: game_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Current score
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  gameId:
+                    type: string
+                  score:
+                    type: integer
+  /questions:
+    get:
+      summary: List all questions
+      responses:
+        '200':
+          description: Question list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Question'
+    post:
+      summary: Create a question (admin)
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Created question
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+  /questions/{question_id}:
+    put:
+      summary: Update a question (admin)
+      parameters:
+        - name: question_id
+          in: path
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Updated question
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+  /login:
+    post:
+      summary: Authenticate a user (ASR-2)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Authenticated user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  username:
+                    type: string
+                  role:
+                    type: string
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    Question:
+      type: object
+      properties:
+        id:
+          type: string
+        prompt:
+          type: string
+        options:
+          type: array
+          items:
+            type: string
+        correct_answer:
+          type: string

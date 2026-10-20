@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Space Fractions</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Intro screen -->
+    <section id="screen-intro" class="screen active">
+      <h1>🚀 Space Fractions</h1>
+      <p class="tagline">Boost your fraction skills across the galaxy!</p>
+      <button class="primary" data-action="go-menu">🚀 Enter</button>
+    </section>
+
+    <!-- Main menu -->
+    <section id="screen-menu" class="screen">
+      <h1>Main Menu</h1>
+      <div class="menu-grid">
+        <button class="primary" data-action="start-game">▶ Play</button>
+        <button data-action="show-help">❓ Help</button>
+        <button data-action="show-admin">⚙️ Admin</button>
+      </div>
+      <p id="player-greeting" class="muted"></p>
+    </section>
+
+    <!-- Game / question screen -->
+    <section id="screen-game" class="screen">
+      <div id="hud">
+        <span id="hud-score">Score: 0</span>
+        <span id="hud-progress">Question 0/0</span>
+      </div>
+      <h2 id="question-prompt">Loading…</h2>
+      <div id="question-options" class="options"></div>
+      <p id="feedback" class="feedback hidden"></p>
+      <button id="next-button" class="primary hidden" data-action="next-question">Next ▶</button>
+      <button class="link" data-action="go-menu">⬅ Menu</button>
+    </section>
+
+    <!-- Score screen -->
+    <section id="screen-score" class="screen">
+      <h1>🌟 Final Score</h1>
+      <p id="final-score" class="big-score">0</p>
+      <p id="final-detail" class="muted"></p>
+      <button class="primary" data-action="show-ending">Continue ➡</button>
+      <button class="link" data-action="go-menu">⬅ Menu</button>
+    </section>
+
+    <!-- Help screen -->
+    <section id="screen-help" class="screen">
+      <h1>❓ Help</h1>
+      <div class="help-text">
+        <p><strong>Adding fractions:</strong> find a common denominator first.</p>
+        <p><strong>Example:</strong> 1/2 + 1/4 → 2/4 + 1/4 = 3/4.</p>
+        <p><strong>Multiplying:</strong> multiply tops and bottoms, then simplify.</p>
+        <p><strong>Answer by clicking</strong> the correct option.</p>
+      </div>
+      <button class="link" data-action="go-menu">⬅ Menu</button>
+    </section>
+
+    <!-- Admin screen -->
+    <section id="screen-admin" class="screen">
+      <h1>⚙️ Admin — Questions</h1>
+      <div id="admin-login" class="admin-login">
+        <input id="admin-username" type="text" placeholder="Admin username" autocomplete="username" />
+        <input id="admin-password" type="password" placeholder="Password" autocomplete="current-password" />
+        <button data-action="admin-login">Login</button>
+        <p id="admin-status" class="muted"></p>
+      </div>
+      <div id="admin-panel" class="hidden">
+        <p id="admin-message" class="muted" role="status"></p>
+        <div id="admin-question-list"></div>
+        <h2>Add / Edit Question</h2>
+        <input id="q-prompt" type="text" placeholder="Prompt" />
+        <input id="q-options" type="text" placeholder="Options (comma separated)" />
+        <input id="q-correct" type="number" min="0" placeholder="Correct index" />
+        <input id="q-explanation" type="text" placeholder="Explanation" />
+        <input type="hidden" id="q-id" />
+        <button class="primary" data-action="save-question">Save</button>
+        <button class="link" data-action="admin-logout">Log out</button>
+        <button class="link" data-action="go-menu">⬅ Menu</button>
+      </div>
+    </section>
+
+    <!-- Ending screen -->
+    <section id="screen-ending" class="screen">
+      <h1>🏆 Mission Complete!</h1>
+      <p id="ending-message" class="muted"></p>
+      <button class="primary" data-action="go-menu">Back to Menu</button>
+    </section>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+syntax = "proto3";
+package spacefractions;
+
+// Internal contract between GameComponent and QuestionComponent.
+service GameService {
+  rpc Play(PlayRequest) returns (PlayResponse) {}
+}
+
+message PlayRequest {
+  int32 gameId = 1;
+}
+
+message PlayResponse {
+  int32 gameId = 1;
+}

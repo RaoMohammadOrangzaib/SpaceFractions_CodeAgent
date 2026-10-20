@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package spacefractions;
+
+// Internal gRPC contract between game and question services (NFR-1: performance).
+service GameService {
+  rpc Play(PlayRequest) returns (PlayResponse) {}
+  rpc SubmitAnswer(AnswerRequest) returns (AnswerResponse) {}
+  rpc ViewScore(ScoreRequest) returns (ScoreResponse) {}
+}
+
+service QuestionService {
+  rpc GetPrompt(QuestionRequest) returns (QuestionResponse) {}
+  rpc CheckAnswer(CheckRequest) returns (CheckResponse) {}
+  rpc UpdateQuestion(UpdateRequest) returns (UpdateResponse) {}
+}
+
+message PlayRequest {
+  int32 gameId = 1;
+}
+
+message PlayResponse {
+  int32 gameId = 1;
+  repeated string questionIds = 2;
+}
+
+message AnswerRequest {
+  int32 gameId = 1;
+  int32 answerIndex = 2;
+}
+
+message AnswerResponse {
+  bool correct = 1;
+  int32 score = 2;
+  bool finished = 3;
+  string explanation = 4;
+}
+
+message ScoreRequest {
+  int32 gameId = 1;
+}
+
+message ScoreResponse {
+  int32 score = 1;
+  int32 totalAnswered = 2;
+  int32 totalQuestions = 3;
+}
+
+message QuestionRequest {
+  string questionId = 1;
+}
+
+message QuestionResponse {
+  string id = 1;
+  string prompt = 2;
+  repeated string options = 3;
+}
+
+message CheckRequest {
+  string questionId = 1;
+  int32 answerIndex = 2;
+}
+
+message CheckResponse {
+  bool correct = 1;
+  string correctAnswer = 2;
+  string explanation = 3;
+}
+
+message UpdateRequest {
+  string id = 1;
+  string prompt = 2;
+  repeated string options = 3;
+  int32 correctIndex = 4;
+  string explanation = 5;
+}
+
+message UpdateResponse {
+  bool success = 1;
+}
